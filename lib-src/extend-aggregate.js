@@ -24,23 +24,24 @@ module.exports = function(mongoose, cache, debug) {
 
       let key     = this._key || this.getCacheKey()
         , ttl     = this._ttl
-        , promise = new mongoose.Promise.ES6()
+        , promise = new mongoose.Promise.ES6
         ;
 
-      promise.onResolve(callback);
-
-      cache.get(key, (err, cachedResults) => {
-        if (cachedResults) {
-          if (debug) cachedResults._fromCache = true;
-          promise.resolve(null, cachedResults);
-        } else {
-          exec.call(this).onResolve((err, results) => {
-            if (err) return promise.resolve(err);
-            cache.set(key, results, ttl, () => {
-              promise.resolve(null, results);
+      return new promise((resolve, reject) => {
+        cache.get(key, (err, cachedResults) => {
+          if (cachedResults) {
+            if (debug) cachedResults._fromCache = true;
+            resolve(cachedResults);
+          } else {
+            exec.call(this).then((results) => {
+              cache.set(key, results, ttl, () => {
+                resolve(results);
+              });
+            }).catch((err) => {
+              reject(err);
             });
-          });
-        }
+          }
+        });
       });
 
       return promise;
