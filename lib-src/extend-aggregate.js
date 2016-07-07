@@ -24,7 +24,7 @@ module.exports = function(mongoose, cache, debug) {
 
       let key     = this._key || this.getCacheKey()
         , ttl     = this._ttl
-        , promise = new mongoose.Promise.ES6
+        , promise = mongoose.Promise.ES6
         ;
 
       return new promise((resolve, reject) => {
