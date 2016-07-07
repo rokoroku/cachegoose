@@ -17,7 +17,7 @@ module.exports = function(mongoose, cache, debug) {
       , ttl     = this._ttl
       , isLean  = this._mongooseOptions.lean
       , model   = this.model.modelName
-      , promise = new mongoose.Promise()
+      , promise = new mongoose.Promise.ES6()
       ;
 
     promise.onResolve(callback);

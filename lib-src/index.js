@@ -3,7 +3,7 @@ let hasRun = false
   ;
 
 module.exports = function init(mongoose, cacheOptions, debug) {
-  if (mongoose.version < '3.7') throw new Error('Cachegoose is only compatible with mongoose 3.7+');
+  if (mongoose.version < '4.0') throw new Error('Cachegoose is only compatible with mongoose 4.0+');
   if (hasRun) return;
   hasRun = true;
 
